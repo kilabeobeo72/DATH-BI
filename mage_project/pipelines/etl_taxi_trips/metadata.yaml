@@ -53,7 +53,7 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - commit_watermark_log
+  - run_dbt_transform
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -69,6 +69,23 @@ blocks:
 - all_upstream_blocks_executed: false
   color: null
   configuration: {}
+  downstream_blocks:
+  - commit_watermark_log
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: run_dbt_transform
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - export_to_staging
+  uuid: run_dbt_transform
+- all_upstream_blocks_executed: false
+  color: null
+  configuration: {}
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
@@ -80,7 +97,7 @@ blocks:
   timeout: null
   type: data_exporter
   upstream_blocks:
-  - export_to_staging
+  - run_dbt_transform
   uuid: commit_watermark_log
 name: etl_taxi_trips
 type: python
