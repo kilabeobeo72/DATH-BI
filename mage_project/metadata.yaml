@@ -1,0 +1,10 @@
+project_uuid: nyc_taxi_bi_project
+features:
+  add_new_block_v2: true
+  command_center: true
+  data_integration_in_batch_pipeline: true
+  dbt_v2: true
+  display_local_timezone: true
+  interactions: true
+  notebook_block_output_split_view: true
+help_improve_mage: false

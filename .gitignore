@@ -1,0 +1,27 @@
+# Environment & Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Data files (heavy Parquet / Shapefiles)
+data/landing/*.parquet
+data/archive/*.parquet
+data/lookup/*.csv
+data/lookup/*.zip
+
+# dbt build artifacts & logs
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# Mage runtime & local logs
+mage_project/.variables/
+mage_project/mage_data/
+*.log
+.DS_Store
+Thumbs.db

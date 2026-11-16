@@ -1,0 +1,89 @@
+blocks:
+- all_upstream_blocks_executed: true
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - extract_parquet_landing
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: load_watermark_and_cet
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: data_loader
+  upstream_blocks: []
+  uuid: load_watermark_and_cet
+- all_upstream_blocks_executed: false
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - prepare_staging_batch
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: extract_parquet_landing
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: data_loader
+  upstream_blocks:
+  - load_watermark_and_cet
+  uuid: extract_parquet_landing
+- all_upstream_blocks_executed: false
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - export_to_staging
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: prepare_staging_batch
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: transformer
+  upstream_blocks:
+  - extract_parquet_landing
+  uuid: prepare_staging_batch
+- all_upstream_blocks_executed: false
+  color: null
+  configuration: {}
+  downstream_blocks:
+  - commit_watermark_log
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: export_to_staging
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - prepare_staging_batch
+  uuid: export_to_staging
+- all_upstream_blocks_executed: false
+  color: null
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: commit_watermark_log
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: data_exporter
+  upstream_blocks:
+  - export_to_staging
+  uuid: commit_watermark_log
+name: etl_taxi_trips
+type: python
+uuid: etl_taxi_trips
+variables:
+  load_mode: incremental

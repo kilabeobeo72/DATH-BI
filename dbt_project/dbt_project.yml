@@ -1,0 +1,30 @@
+name: 'nyc_taxi_dw'
+version: '1.0.0'
+config-version: 2
+
+profile: 'nyc_taxi_dw'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  nyc_taxi_dw:
+    staging:
+      +materialized: view
+      +schema: stage
+    control:
+      +materialized: incremental
+      +schema: ctrl
+    dds:
+      +materialized: incremental
+      +schema: dds
+    olap:
+      +materialized: table
+      +schema: olap

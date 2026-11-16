@@ -1,0 +1,5 @@
+-- Tạo 4 schema chuẩn cho Kho dữ liệu 3 tầng + OLAP (GĐ3)
+CREATE SCHEMA IF NOT EXISTS ctrl;
+CREATE SCHEMA IF NOT EXISTS stage;
+CREATE SCHEMA IF NOT EXISTS dds;
+CREATE SCHEMA IF NOT EXISTS olap;

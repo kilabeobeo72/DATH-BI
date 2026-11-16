@@ -1,0 +1,12 @@
+nyc_taxi_dw:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('POSTGRES_HOST', 'postgres') }}"
+      user: "{{ env_var('POSTGRES_USER', 'bi_admin') }}"
+      password: "{{ env_var('POSTGRES_PASSWORD', 'change_me_strong_password') }}"
+      port: "{{ env_var('POSTGRES_PORT', 5432) | int }}"
+      dbname: "{{ env_var('POSTGRES_DB', 'nyc_taxi_dw') }}"
+      schema: dds
+      threads: 4

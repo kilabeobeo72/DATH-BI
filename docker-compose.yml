@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nyc_taxi_postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-nyc_taxi_dw}
+      POSTGRES_USER: ${POSTGRES_USER:-bi_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_strong_password}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bi_admin} -d ${POSTGRES_DB:-nyc_taxi_dw}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nyc_taxi_mage
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      USER_CODE_PATH: /home/src/mage_project
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-nyc_taxi_dw}
+      POSTGRES_USER: ${POSTGRES_USER:-bi_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_strong_password}
+      DBT_PROFILES_DIR: /home/src/dbt_project
+    ports:
+      - "${MAGE_PORT:-6789}:6789"
+    volumes:
+      - ./mage_project:/home/src/mage_project
+      - ./dbt_project:/home/src/dbt_project
+      - ./data:/home/src/data
+      - ./sql:/home/src/sql
+    command: mage start mage_project
+
+volumes:
+  postgres_data:

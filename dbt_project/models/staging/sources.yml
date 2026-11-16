@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: stage
+    schema: stage
+    tables:
+      - name: stg_yellow_trips
+  - name: dds
+    schema: dds
+    tables:
+      - name: dim_date
+      - name: dim_time
+      - name: dim_location
+      - name: dim_vendor
+      - name: dim_paymenttype
+      - name: dim_ratecode
+      - name: dim_passengergroup
+      - name: dim_distanceband

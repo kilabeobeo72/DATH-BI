@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: fact_taxitrip
+    description: "Bảng sự kiện trung tâm Fact_TaxiTrip (11 FK + 13 độ đo cơ sở)"
+    columns:
+      - name: pickup_date_key
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_date')
+              field: date_key
+      - name: dropoff_date_key
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_date')
+              field: date_key
+      # TODO (Thành viên 4 - Thanh): Bổ sung test relationships cho đủ 11 FK và kiểm tra 13 độ đo
