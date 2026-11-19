@@ -12,7 +12,7 @@
 Nhóm đã hoàn thiện toàn bộ hạ tầng và pipeline ETL theo đúng thiết kế đã thống nhất:
 * **Hạ tầng Container:** Triển khai bằng Docker Compose gồm PostgreSQL 16 (Data Warehouse), Mage.ai (Workflow Orchestrator) và dbt-postgres (Transformation & Data Quality Engine).
 * **Kiến trúc 3 tầng chuẩn hóa:**
-  1. **Source:** Tệp dữ liệu Parquet 24 tháng (2023–2024) đặt tại `data/parquet/` và tệp tra cứu `taxi_zone_lookup.csv`.
+  1. **Source:** Tệp dữ liệu Parquet 24 tháng (2023–2024) đặt tại `data/landing/` và tệp tra cứu `taxi_zone_lookup.csv` tại `data/lookup/`.
   2. **Staging (`stage`):** Bảng `stage.stg_yellow_trips` nhận dữ liệu theo cơ chế Truncate & Reload cho từng batch để tối ưu tài nguyên RAM.
   3. **DDS (`dds`):** Gồm 8 bảng Dimension chuẩn hóa (`dim_date`, `dim_time`, `dim_location`, `dim_vendor`, `dim_paymenttype`, `dim_ratecode`, `dim_passengergroup`, `dim_distanceband`) và 1 bảng sự kiện trung tâm `dds.fact_taxitrip`.
   4. **Control (`ctrl`):** Schema quản lý metadata và dữ liệu lỗi gồm 4 bảng: `ctrl.etl_watermark`, `ctrl.etl_run_log`, `ctrl.processed_files`, và `ctrl.quarantine_log`.

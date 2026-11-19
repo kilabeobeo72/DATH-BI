@@ -4,7 +4,7 @@
 -- Nếu truy vấn trả về bất kỳ bản ghi nào, kiểm thử THẤT BẠI.
 
 SELECT
-    trip_id,
+    trip_fact_key,
     batch_id,
     source_file,
     fare_amount,

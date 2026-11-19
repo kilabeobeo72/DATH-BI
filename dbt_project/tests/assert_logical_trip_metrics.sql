@@ -8,7 +8,7 @@
 
 WITH speed_calc AS (
     SELECT
-        trip_id,
+        trip_fact_key,
         batch_id,
         source_file,
         trip_distance_miles,
@@ -23,7 +23,7 @@ WITH speed_calc AS (
 )
 
 SELECT
-    trip_id,
+    trip_fact_key,
     batch_id,
     source_file,
     trip_distance_miles,

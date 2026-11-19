@@ -19,7 +19,7 @@ UNION ALL SELECT 'dim_distanceband', COUNT(*) FROM dds.dim_distanceband;
 -- dim_time: 1440 dòng (1440 phút trong ngày)
 -- dim_location: 265 dòng (khu vực 1..265)
 -- dim_vendor: >= 3 dòng (1: CMT, 2: VTS, 99: OTHER)
--- dim_paymenttype: 6 dòng (1..6)
+-- dim_paymenttype: 7 dòng (0..6)
 -- dim_ratecode: 7 dòng (1..6, 99)
 -- dim_passengergroup: 4 dòng (1: Đi một mình, 2: Nhóm 2-4, 3: Nhóm 5+, 4: Chưa xác định)
 -- dim_distanceband: 5 dòng (Rất ngắn, Ngắn, Trung bình, Dài, Rất dài)

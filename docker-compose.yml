@@ -46,6 +46,7 @@ services:
       - ./dbt_project:/home/src/dbt_project
       - ./data:/home/src/data
       - ./sql:/home/src/sql
+      - ./tests:/home/src/tests
     command: mage start mage_project
 
 volumes:

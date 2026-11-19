@@ -4,7 +4,7 @@
 -- Nếu truy vấn trả về bất kỳ dòng nào, kiểm thử THẤT BẠI.
 
 SELECT
-    f.trip_id,
+    f.trip_fact_key,
     f.batch_id,
     f.source_file,
     f.pickup_date_key,
