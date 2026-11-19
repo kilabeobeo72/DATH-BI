@@ -8,12 +8,15 @@ CREATE TABLE IF NOT EXISTS ctrl.etl_watermark (
     last_successful_extraction_time TIMESTAMP NOT NULL,
     last_batch_id                   VARCHAR(64),
     last_status                     VARCHAR(20) NOT NULL DEFAULT 'INIT',
-    updated_at                      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at                      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    lset                            TIMESTAMP,
+    cet                             TIMESTAMP,
+    last_run_mode                   VARCHAR(20)
 );
 
 -- Khởi tạo watermark mặc định cho pipeline Yellow Taxi (chạy Full Load lần đầu)
-INSERT INTO ctrl.etl_watermark (pipeline_name, last_successful_extraction_time, last_status)
-VALUES ('etl_taxi_trips', TIMESTAMP '1900-01-01 00:00:00', 'INIT')
+INSERT INTO ctrl.etl_watermark (pipeline_name, last_successful_extraction_time, last_status, lset, last_run_mode)
+VALUES ('etl_taxi_trips', TIMESTAMP '1900-01-01 00:00:00', 'INIT', TIMESTAMP '1900-01-01 00:00:00', 'full')
 ON CONFLICT (pipeline_name) DO NOTHING;
 
 -- 2. Nhật ký từng lần chạy ETL (Audit & Monitoring)
@@ -22,12 +25,16 @@ CREATE TABLE IF NOT EXISTS ctrl.etl_run_log (
     pipeline_name       VARCHAR(100) NOT NULL,
     batch_id            VARCHAR(64) NOT NULL,
     load_mode           VARCHAR(20) NOT NULL, -- 'full' | 'incremental'
+    run_mode            VARCHAR(20),
     lset_used           TIMESTAMP NOT NULL,
     cet_captured        TIMESTAMP NOT NULL,   -- PHẢI lấy ngay thời điểm BẮT ĐẦU pipeline
     files_processed     INTEGER DEFAULT 0,
     rows_extracted      BIGINT DEFAULT 0,
+    records_extracted   BIGINT DEFAULT 0,
     rows_loaded_fact    BIGINT DEFAULT 0,
+    records_fact_inserted BIGINT DEFAULT 0,
     rows_quarantined    BIGINT DEFAULT 0,
+    records_quarantined BIGINT DEFAULT 0,
     status              VARCHAR(20) NOT NULL, -- 'RUNNING' | 'SUCCESS' | 'FAILED'
     error_message       TEXT,
     started_at          TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
