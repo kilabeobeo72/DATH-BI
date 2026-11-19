@@ -2,18 +2,185 @@ version: 2
 
 models:
   - name: fact_taxitrip
-    description: "Bảng sự kiện trung tâm Fact_TaxiTrip (11 FK + 13 độ đo cơ sở)"
+    description: "Bảng sự kiện trung tâm Fact_TaxiTrip (11 Khóa ngoại FK + 13 Độ đo cơ sở)"
     columns:
+      # ==========================================================
+      # 11 KHÓA NGOẠI (FOREIGN KEYS) KẾT NỐI 8 BẢNG DIMENSION
+      # ==========================================================
       - name: pickup_date_key
+        description: "Khóa ngoại tới Dim_Date cho Ngày đón khách"
         tests:
           - not_null
           - relationships:
               to: source('dds', 'dim_date')
               field: date_key
+
       - name: dropoff_date_key
+        description: "Khóa ngoại tới Dim_Date cho Ngày trả khách"
         tests:
           - not_null
           - relationships:
               to: source('dds', 'dim_date')
               field: date_key
-      # TODO (Thành viên 4 - Thanh): Bổ sung test relationships cho đủ 11 FK và kiểm tra 13 độ đo
+
+      - name: pickup_time_key
+        description: "Khóa ngoại tới Dim_Time cho Giờ đón khách"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_time')
+              field: time_key
+
+      - name: dropoff_time_key
+        description: "Khóa ngoại tới Dim_Time cho Giờ trả khách"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_time')
+              field: time_key
+
+      - name: pickup_location_key
+        description: "Khóa ngoại tới Dim_Location cho Điểm đón khách"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_location')
+              field: location_key
+
+      - name: dropoff_location_key
+        description: "Khóa ngoại tới Dim_Location cho Điểm trả khách"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_location')
+              field: location_key
+
+      - name: vendor_key
+        description: "Khóa ngoại tới Dim_Vendor cho Nhà cung cấp thiết bị"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_vendor')
+              field: vendor_key
+
+      - name: payment_type_key
+        description: "Khóa ngoại tới Dim_PaymentType cho Phương thức thanh toán"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_paymenttype')
+              field: payment_type_key
+
+      - name: rate_code_key
+        description: "Khóa ngoại tới Dim_RateCode cho Loại biểu cước chuyến đi"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_ratecode')
+              field: rate_code_key
+
+      - name: passenger_group_key
+        description: "Khóa ngoại tới Dim_PassengerGroup cho Nhóm quy mô hành khách"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_passengergroup')
+              field: passenger_group_key
+
+      - name: distance_band_key
+        description: "Khóa ngoại tới Dim_DistanceBand cho Nhóm dải cự ly di chuyển"
+        tests:
+          - not_null
+          - relationships:
+              to: source('dds', 'dim_distanceband')
+              field: distance_band_key
+
+      # ==========================================================
+      # 13 ĐỘ ĐO CƠ SỞ (BASE MEASURES)
+      # ==========================================================
+      - name: trip_count
+        description: "Độ đo số chuyến đi (luôn bằng 1)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1]
+
+      - name: passenger_count
+        description: "Số lượng hành khách trên chuyến xe (0 đến 9)"
+        tests:
+          - not_null
+
+      - name: trip_distance_miles
+        description: "Quãng đường di chuyển tính bằng dặm (> 0 và <= 150)"
+        tests:
+          - not_null
+
+      - name: trip_duration_minutes
+        description: "Thời gian di chuyển tính bằng phút (1 đến 300)"
+        tests:
+          - not_null
+
+      - name: fare_amount
+        description: "Cước phí cơ sở theo đồng hồ đo (>= 0)"
+        tests:
+          - not_null
+
+      - name: extra_amount
+        description: "Phụ phí phát sinh (>= 0)"
+        tests:
+          - not_null
+
+      - name: mta_tax
+        description: "Thuế cơ quan giao thông đô thị MTA (>= 0)"
+        tests:
+          - not_null
+
+      - name: tip_amount
+        description: "Tiền boa chi trả qua hệ thống (>= 0)"
+        tests:
+          - not_null
+
+      - name: tolls_amount
+        description: "Phí cầu đường (>= 0)"
+        tests:
+          - not_null
+
+      - name: improvement_surcharge
+        description: "Phụ phí cải thiện phương tiện (>= 0)"
+        tests:
+          - not_null
+
+      - name: congestion_surcharge
+        description: "Phụ phí khu vực tắc đường Manhattan (>= 0)"
+        tests:
+          - not_null
+
+      - name: airport_fee
+        description: "Phụ phí ra vào sân bay (>= 0)"
+        tests:
+          - not_null
+
+      - name: total_amount
+        description: "Tổng số tiền hành khách phải trả"
+        tests:
+          - not_null
+
+      # ==========================================================
+      # THUỘC TÍNH METADATA & PHÂN VÙNG
+      # ==========================================================
+      - name: store_and_fwd_flag
+        description: "Cờ lưu trữ và chuyển tiếp (Y/N)"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Y', 'N']
+
+      - name: batch_id
+        description: "Mã định danh đợt nạp dữ liệu"
+        tests:
+          - not_null
+
+      - name: source_file
+        description: "Tên tệp dữ liệu gốc"
+        tests:
+          - not_null
