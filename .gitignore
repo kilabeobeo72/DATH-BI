@@ -9,12 +9,16 @@ __pycache__/
 venv/
 
 # Data files (heavy Parquet / Shapefiles)
+data/landing/**/*.parquet
 data/landing/*.parquet
+data/archive/**/*.parquet
 data/archive/*.parquet
 data/lookup/*.csv
 !data/lookup/taxi_zone_lookup.csv
 data/lookup/*.zip
 data/parquet/
+*.parquet
+*.pdf
 
 # dbt build artifacts & logs
 dbt_project/target/
