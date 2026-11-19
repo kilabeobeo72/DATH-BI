@@ -14,6 +14,7 @@ data/archive/*.parquet
 data/lookup/*.csv
 !data/lookup/taxi_zone_lookup.csv
 data/lookup/*.zip
+data/parquet/
 
 # dbt build artifacts & logs
 dbt_project/target/
